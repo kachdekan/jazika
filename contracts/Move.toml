@@ -1,0 +1,14 @@
+[package]
+name = "Jazika Finance"
+version = "1.0.0"
+authors = [kachdekan]
+
+[addresses]
+jazika_fi_addr = "_"
+fa_jkes_addr = "_"
+super_admin_addr = "_"
+
+[dependencies]
+AptosFramework = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "testnet", subdir = "aptos-move/framework/aptos-framework" }
+
+[dev-dependencies]
