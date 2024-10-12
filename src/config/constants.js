@@ -1,0 +1,20 @@
+module.exports = {
+  NULL_ADDRESS: '0x0000000000000000000000000000000000000000',
+  ENC_KEY: 'bfe1fbcebc99b86afaa3317edff5c4ef63d2d448',
+  OTA_KEY: 'CodeCollision2024',
+  STORAGE_KEY: '1acadf9b-3d4d-40dc-88fc-8f6b934b3c0d',
+  PIN_BLOCKLIST: [
+    '000000',
+    '111111',
+    '222222',
+    '333333',
+    '444444',
+    '555555',
+    '666666',
+    '777777',
+    '888888',
+    '999999',
+    '123456',
+    '654321',
+  ],
+};

@@ -40,8 +40,7 @@ yarn-error.*
 
 
 testProvider.js
-#google-services.prod.json
-google-services.test.json
+google-services.json
 GoogleService-Info.plist
 
 android/
