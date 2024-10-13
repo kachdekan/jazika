@@ -8,6 +8,7 @@ const AppStack = createNativeStackNavigator();
 
 export function AppNavigator() {
   const isLoggedIn = useSelector((s) => s.wallet.isLoggedIn);
+  console.log(isLoggedIn);
   return (
     <AppStack.Navigator>
       <AppStack.Screen
