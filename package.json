@@ -28,6 +28,7 @@
     "@reduxjs/toolkit": "^2.2.8",
     "crypto-js": "3.1.9-1",
     "expo": "^50.0.0",
+    "expo-clipboard": "~5.0.1",
     "expo-constants": "~15.4.6",
     "expo-dev-client": "~3.3.12",
     "expo-font": "~11.10.3",
