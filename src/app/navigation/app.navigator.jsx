@@ -2,11 +2,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import DummyScreen from '../dummy.screen';
 import { LoginScreen } from '../wallet';
 import { BottomTabs } from './bottom.tabs';
+import { useSelector } from 'react-redux';
 
 const AppStack = createNativeStackNavigator();
 
 export function AppNavigator() {
-  const isLoggedIn = false;
+  const isLoggedIn = useSelector((s) => s.wallet.isLoggedIn);
   return (
     <AppStack.Navigator>
       <AppStack.Screen

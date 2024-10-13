@@ -1,14 +1,14 @@
 import { Box, Text, VStack, Spacer, Button } from 'native-base';
 import { CodeInput, ResendTimer } from 'jzk/components';
 import { useEffect, useState } from 'react';
-//import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import auth from '@react-native-firebase/auth';
-
-//import { setUserDetails } from 'dapp/redux/essential/essential.slice';
+import { setUserDetails } from 'jzk/redux/wallet.slice';
+import { createKeylessAccount } from 'jzk/services';
 
 export default function VerificationScreen({ navigation, route }) {
   const { phone, country, verificationId } = route.params;
-  //const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [code, setCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [codeReady, setCodeReady] = useState(false);
@@ -18,22 +18,18 @@ export default function VerificationScreen({ navigation, route }) {
     try {
       const credential = auth.PhoneAuthProvider.credential(verificationId, code);
       const res = await auth().signInWithCredential(credential);
-      console.log(res.user.uid);
-      /*dispatch(
+      const { address } = await createKeylessAccount(res.user.phoneNumber, res.user.uid);
+      dispatch(
         setUserDetails({
           id: res.user.uid,
           names: res.user.displayName,
           email: res.user.email,
-          phone: res.user.phoneNumber,
+          phone: res.user.phoneNumber.substring(1),
           photoUri: res.user.photoURL,
           country: country,
-          isNewUser: res.additionalUserInfo.isNewUser,
-          date: {
-            created: Date.now(),
-          },
+          address,
         }),
-      );*/
-
+      );
       navigation.navigate('setPasscode');
     } catch (error) {
       console.log('Invalid code.');

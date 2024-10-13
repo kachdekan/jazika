@@ -1,17 +1,18 @@
 import { registerRootComponent } from 'expo';
-//import { Provider } from 'react-redux';
+import { Provider } from 'react-redux';
 //import '@walletconnect/react-native-compat';
 import 'react-native-get-random-values';
-//import 'expo-dev-client';
-//import '@ethersproject/shims';
+import '@ethersproject/shims';
+import 'expo-dev-client';
+import 'text-encoding';
 
 import App from './src/app';
-//import { store } from './redux';
+import { store } from './src/redux';
 
 const ReduxApp = () => (
-  //<Provider store={store}>
-  <App />
-  //</Provider>
+  <Provider store={store}>
+    <App />
+  </Provider>
 );
 
 // registerRootComponent calls AppRegistry.registerComponent('main', () => App);

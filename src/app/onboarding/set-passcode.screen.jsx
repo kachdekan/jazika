@@ -2,14 +2,14 @@ import { Box, VStack, Spinner, Text } from 'native-base';
 import { useEffect, useState } from 'react';
 import { CodeInput } from 'jzk/components';
 import { PIN_BLOCKLIST } from 'jzk/config';
-//import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setUserToken, userToken } from 'jzk/services';
 //import { createWallet, importWallet } from 'dapp/store/wallet/wallet.slice';
-//import { addUserDetailsToken } from 'dapp/redux/essential/essential.slice';
+import { addUserDetailsToken } from 'jzk/redux/wallet.slice';
 //import { pendingWallet } from 'dapp/wallet';
 
 export default function SetPasscodeScreen({ navigation }) {
-  //const dispatch = useDispatch();
+  const dispatch = useDispatch();
   //const userDetails = useSelector((state) => state.essential.userDetails);
   const [code1, setCode1] = useState('');
   const [code2, setCode2] = useState('');
@@ -35,7 +35,7 @@ export default function SetPasscodeScreen({ navigation }) {
       setCode2('');
       setIsVerifying(false);
       if (userToken) {
-        //dispatch(addUserDetailsToken(userToken));
+        dispatch(addUserDetailsToken(userToken));
         console.log(userToken);
       }
     } else {
