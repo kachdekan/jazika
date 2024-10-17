@@ -14,7 +14,6 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "@aptos-labs/ts-sdk": "^1.29.1",
     "@ethersproject/shims": "^5.7.0",
     "@expo/vector-icons": "^14.0.0",
     "@noble/ed25519": "^2.1.0",
@@ -26,6 +25,7 @@
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.11.0",
     "@reduxjs/toolkit": "^2.2.8",
+    "buffer": "^6.0.3",
     "crypto-js": "3.1.9-1",
     "expo": "^50.0.0",
     "expo-clipboard": "~5.0.1",
@@ -41,6 +41,7 @@
     "expo-web-browser": "~12.8.2",
     "libphonenumber-js": "^1.11.11",
     "native-base": "patch:native-base@npm%3A3.4.28#~/.yarn/patches/native-base-npm-3.4.28-a8ecceae4d.patch",
+    "near-api-js": "^5.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.73.6",

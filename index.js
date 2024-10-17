@@ -5,6 +5,9 @@ import 'react-native-get-random-values';
 import '@ethersproject/shims';
 import 'expo-dev-client';
 import 'text-encoding';
+import { Buffer } from 'buffer';
+
+global.Buffer = Buffer;
 
 import App from './src/app';
 import { store } from './src/redux';

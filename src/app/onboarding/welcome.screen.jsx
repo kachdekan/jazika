@@ -1,11 +1,10 @@
 import { Box, VStack, Button, Heading, Spacer, Text } from 'native-base';
-import { seedAccount } from 'jzk/services';
+import { createAccount } from 'jzk/services';
 
 export default function WelcomeScreen({ navigation }) {
-  const createAccount = async () => {
-    const tx = await seedAccount(
-      '0x69fdad18fc02af0030d30461076b3e70fe9348299490a7f061767f8c72dc2178',
-    );
+  const handleFn = async () => {
+    console.log('Called');
+    const tx = await createAccount('+2541234567890', 'some-unique-001');
     console.log(tx);
   };
   return (
@@ -31,7 +30,7 @@ export default function WelcomeScreen({ navigation }) {
           pr="4"
           minW="75%"
           _text={{ color: 'coolGray.800', fontWeight: 'semibold', mb: '0.5' }}
-          onPress={() => createAccount()} //navigation.navigate('restore')}
+          onPress={() => handleFn()} //navigation.navigate('restore')}
         >
           I have an Account
         </Button>

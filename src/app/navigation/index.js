@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator();
 
 export function Navigation() {
   const dispatch = useDispatch();
-  const { address, id } = useSelector((s) => s.wallet.userDetails);
+  /*const { address, id } = useSelector((s) => s.wallet.userDetails);
   const tokenIsSet = useSelector((s) => s.wallet.isTokenSet);
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(async (user) => {
@@ -27,8 +27,8 @@ export function Navigation() {
       }
     });
     return subscriber;
-  }, [dispatch]);
-  const hasAccount = !!(address && id && tokenIsSet);
+  }, [dispatch]);*/
+  const hasAccount = false; //!!(address && id && tokenIsSet);
 
   return (
     <NavigationContainer>

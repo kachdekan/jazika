@@ -19,10 +19,10 @@ const AssetItem = (props) => {
           source={
             props.name === 'JKES'
               ? {
-                  uri: 'https://assets.coingecko.com/coins/images/13161/standard/icon-celo-dollar-color-1000-circle-cropped.png',
+                  uri: 'https://assets.coingecko.com/coins/images/29789/standard/kag-currency-ticker.png',
                 }
               : {
-                  uri: 'https://assets.coingecko.com/coins/images/13161/standard/icon-celo-dollar-color-1000-circle-cropped.png',
+                  uri: 'https://assets.coingecko.com/coins/images/26455/standard/aptos_round.png',
                 }
           }
         >
