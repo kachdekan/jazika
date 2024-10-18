@@ -1,10 +1,10 @@
 import { Box, VStack, Button, Heading, Spacer, Text } from 'native-base';
-import { createAccount } from 'jzk/services';
+import { createAccountUsingHelper } from 'jzk/services';
 
 export default function WelcomeScreen({ navigation }) {
   const handleFn = async () => {
     console.log('Called');
-    const tx = await createAccount('+2541234567890', 'some-unique-001');
+    const tx = await createAccountUsingHelper('+2541234567890', 'some-unique-001');
     console.log(tx);
   };
   return (

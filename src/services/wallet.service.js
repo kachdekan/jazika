@@ -3,6 +3,8 @@ import Crypto from 'crypto-js';
 import * as ed from '@noble/ed25519';
 import { sha512 } from '@noble/hashes/sha512';
 import { encode as base58Encode } from 'bs58';
+import axios from 'axios';
+
 const { connect, keyStores, utils } = nearAPI;
 
 const config = {
@@ -14,10 +16,8 @@ const config = {
   explorerUrl: 'https://explorer.testnet.near.org',
 };
 
-// Helper function to convert WordArray to Uint8Array
 function wordArrayToUint8Array(wordArray) {
-  const words = wordArray.words;
-  const sigBytes = wordArray.sigBytes;
+  const { words, sigBytes } = wordArray;
   const u8 = new Uint8Array(sigBytes);
   for (let i = 0; i < sigBytes; i++) {
     u8[i] = (words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
@@ -25,7 +25,6 @@ function wordArrayToUint8Array(wordArray) {
   return u8;
 }
 
-// Set sha512 function for ed25519
 ed.etc.sha512Sync = (...m) => sha512(ed.etc.concatBytes(...m));
 
 export async function generateKeyPair(phoneNumber, uid) {
@@ -34,48 +33,92 @@ export async function generateKeyPair(phoneNumber, uid) {
   const hashArray = wordArrayToUint8Array(fullHash);
   const seed = hashArray.slice(0, 32);
 
-  // Generate private key from seed
   const privateKey = ed.utils.randomPrivateKey(seed);
   const publicKey = await ed.getPublicKey(privateKey);
 
   return { privateKey, publicKey };
 }
 
-// Function to generate KeyPair from a private key
 function generateKeyPairFromPrivateKey(privateKey) {
   return utils.KeyPair.fromString(privateKey);
 }
 
-export async function createAccount(phoneNumber, uid) {
+export async function createAccountUsingHelper(phoneNumber, uid) {
   try {
     const { privateKey, publicKey } = await generateKeyPair(phoneNumber, uid);
-    const accountId = phoneNumber.replace(/[^a-zA-Z0-9]/g, '') + '.testnet';
-    const publicKeyString = 'ed25519:' + base58Encode(publicKey);
+    const accountId = `${phoneNumber.replace(/[^a-zA-Z0-9]/g, '')}.testnet`;
+    console.log(accountId);
+    const publicKeyString = `ed25519:${base58Encode(publicKey)}`;
+    console.log(publicKeyString);
 
-    // Replace this private key with your actual temp account's private key
-    const tempAccountPrivateKey = '';
-    const tempAccountKeyPair = generateKeyPairFromPrivateKey(tempAccountPrivateKey);
+    const response = await retryRequest(async () => {
+      return axios.post(
+        'https://helper.testnet.near.org/account',
+        {
+          newAccountId: accountId,
+          newPublicKey: publicKeyString,
+        },
+        {
+          headers: { 'Content-Type': 'application/json' },
+        },
+      );
+    }, 3);
 
-    await config.keyStore.setKey(config.networkId, 'toughkilt7684.testnet', tempAccountKeyPair);
+    if (!response || response.status !== 200) {
+      throw new Error('Failed to create account after multiple attempts');
+    }
 
-    const near = await connect(config);
-    const tempAccount = await near.account('toughkilt7684.testnet');
-    console.log(tempAccount);
-    const initialBalance = utils.format.parseNearAmount('0.1');
-    await tempAccount.createAccount(accountId, publicKeyString, initialBalance);
+    const data = parseResponse(response.data);
+    console.log('Account created:', data);
 
-    const keyPair = utils.KeyPair.fromString('ed25519:' + base58Encode(privateKey));
+    const keyPair = utils.KeyPair.fromString(`ed25519:${base58Encode(privateKey)}`);
     await config.keyStore.setKey(config.networkId, accountId, keyPair);
-    console.log(keyPair);
+
+    await verifyAccountCreation(accountId);
+
     return {
-      privateKey: 'ed25519:' + base58Encode(privateKey),
+      privateKey: `ed25519:${base58Encode(privateKey)}`,
       publicKey: publicKeyString,
       accountId,
     };
   } catch (error) {
-    console.error('Error creating account:', error);
+    console.error('Error creating account using helper:', error);
     throw error;
   }
+}
+
+async function retryRequest(requestFn, maxRetries) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      const response = await requestFn();
+      if (response.status === 200) return response;
+    } catch (error) {
+      console.error(`Error creating account, attempt ${i + 1}:`, error);
+    }
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+  }
+  return null;
+}
+
+function parseResponse(rawResponse) {
+  console.log('Raw response:', rawResponse);
+  const data = typeof rawResponse === 'object' ? rawResponse : JSON.parse(rawResponse);
+  if (!data || typeof data !== 'object') {
+    throw new Error(`Invalid response data: ${JSON.stringify(rawResponse)}`);
+  }
+  return data;
+}
+
+async function verifyAccountCreation(accountId) {
+  const near = await connect(config);
+  const account = await near.account(accountId);
+  const accountState = await account.state();
+
+  if (!accountState) {
+    throw new Error(`Account ${accountId} was not created successfully`);
+  }
+
+  console.log('Account state:', accountState);
 }
 
 export async function seedAccount(accountId) {
