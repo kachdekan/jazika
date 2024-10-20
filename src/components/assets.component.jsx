@@ -42,14 +42,14 @@ const AssetItem = (props) => {
           </View>
           <XStack justifyContent="space-between" width="82%" alignItems="center">
             <XStack alignItems="center">
-              <Text fontSize="$7">More Assets</Text>
+              <Text fontSize="$6">More Assets</Text>
               <ChevronDown mt="$1" />
             </XStack>
             <YStack mr={2}>
               <Text fontSize="$7" textAlign="right" fontWeight="bold">
                 ${props.amount.toFixed(2)}
               </Text>
-              <Text color="blueGray.800" textAlign="right">
+              <Text color="$gray10" textAlign="right">
                 {props.eqAmount}
               </Text>
             </YStack>
@@ -72,7 +72,7 @@ const AssetItem = (props) => {
               <Text fontSize="$7" fontWeight="bold" textAlign="right">
                 {props.amount.toFixed(2)}
               </Text>
-              <Text color="blueGray.800" textAlign="right">
+              <Text color="$gray10" textAlign="right">
                 {props.eqAmount}
               </Text>
             </YStack>
