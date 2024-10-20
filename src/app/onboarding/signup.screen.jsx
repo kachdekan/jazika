@@ -1,4 +1,4 @@
-import { Box, Text, Button, FormControl, Stack, Icon, Spacer, VStack } from 'native-base';
+import { YStack, SizableText, Text, Button, Input, Spacer, Theme } from 'tamagui';
 import PhoneInput from 'react-native-phone-number-input';
 import { useState, useRef } from 'react';
 import auth from '@react-native-firebase/auth';
@@ -14,11 +14,13 @@ export default function SignUpScreen({ navigation }) {
     const phoneIsValid = phoneInput.current?.isValidNumber(formattedNumber);
     if (!phoneIsValid) {
       alert('Invalid Phone Number, Please enter a valid phone number');
+      setIsLoading(false);
       return;
     }
     const confirmation = await auth().signInWithPhoneNumber(formattedNumber);
     if (!confirmation) {
       alert('Error sending code');
+      setIsLoading(false);
       return;
     }
     setIsLoading(false);
@@ -29,51 +31,59 @@ export default function SignUpScreen({ navigation }) {
       verificationId: confirmation.verificationId,
     });
   };
-  return (
-    <Box flex={1} bg="white" alignItems="center">
-      <FormControl mt="1/6" alignItems="center">
-        <Stack mx={8}>
-          <FormControl.Label>Phone Number</FormControl.Label>
-          <PhoneInput
-            ref={phoneInput}
-            defaultCode="KE"
-            layout="first"
-            autoFocus
-            onChangeFormattedText={(text) => {
-              setPhoneNo(text);
-            }}
-            containerStyle={{
-              borderColor: '#374151',
-              borderWidth: 2,
-              borderRadius: 12,
-              height: 56,
-            }}
-            textContainerStyle={{ borderRadius: 12, paddingTop: 0, paddingBottom: 2 }}
-            codeTextStyle={{ fontSize: 18 }}
-            textInputStyle={{ fontSize: 18 }}
-            //flagButtonStyle={{ height: 40 }}
-          />
-          <FormControl.HelperText color="muted.500">
-            Depending on your mobile network and country, standard rates and taxes may apply.
-          </FormControl.HelperText>
-        </Stack>
-      </FormControl>
-      <Spacer />
 
-      <Button
-        isLoading={isLoading}
-        pr="4"
-        minW="75%"
-        _text={{ fontWeight: 'semibold', mb: '0.5' }}
-        onPress={() => {
-          setIsLoading(true), handleSubmit();
-        }}
-        mb={10}
-        bg="primary.800"
-        isLoadingText="verifying..."
+  return (
+    <YStack flex={1} bg="$background" ai="center">
+      <YStack mt="$6" ai="center" width="95%">
+        <Text fontSize="$8" mb="$6" width="65%" textAlign="center">
+          Let's start with your phone number
+        </Text>
+        <PhoneInput
+          ref={phoneInput}
+          defaultCode="KE"
+          layout="first"
+          autoFocus
+          onChangeFormattedText={(text) => {
+            setPhoneNo(text);
+          }}
+          containerStyle={{
+            borderColor: '$borderColor',
+            borderWidth: 2,
+            borderRadius: 12,
+            height: 56,
+            width: '85%',
+          }}
+          textContainerStyle={{ borderRadius: 12, paddingTop: 0, paddingBottom: 2 }}
+          codeTextStyle={{ fontSize: 18 }}
+          textInputStyle={{ fontSize: 18 }}
+        />
+      </YStack>
+      <Spacer flex={1} />
+      <YStack
+        ai="center"
+        width="100%"
+        bg="$gray4"
+        borderTopEndRadius="$6"
+        borderTopStartRadius="$6"
       >
-        Verify phone
-      </Button>
-    </Box>
+        <Text fontSize="$3" color="$gray12" my="$6" width="75%">
+          Depending on your mobile network and country, standard rates and taxes may apply.
+        </Text>
+        <Button
+          disabled={isLoading}
+          onPress={() => {
+            setIsLoading(true);
+            handleSubmit();
+          }}
+          mb="$8"
+          width="75%"
+          size="$5"
+          themeInverse
+          fontWeight="bold"
+        >
+          {isLoading ? 'Verifying...' : 'Verify phone'}
+        </Button>
+      </YStack>
+    </YStack>
   );
 }

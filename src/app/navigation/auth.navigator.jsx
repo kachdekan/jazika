@@ -11,7 +11,9 @@ export function AuthNavigator() {
         <AuthStack.Screen
           name="signup"
           component={SignUpScreen}
-          options={{ headerTitle: 'Sign Up' }}
+          options={{
+            headerTitle: 'Sign Up',
+          }}
         />
         <AuthStack.Screen
           name="verifyPhoneNo"

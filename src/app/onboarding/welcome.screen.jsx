@@ -1,4 +1,4 @@
-import { Box, VStack, Button, Heading, Spacer, Text } from 'native-base';
+import { YStack, Button, Text, View, Spacer, Theme, H2 } from 'tamagui';
 import { createAccountUsingHelper } from 'jzk/services';
 
 export default function WelcomeScreen({ navigation }) {
@@ -8,36 +8,34 @@ export default function WelcomeScreen({ navigation }) {
     console.log(tx);
   };
   return (
-    <Box flex={1} bg="#fff" alignItems="center" justifyContent="flex-end">
-      <Box width="65%" mt="3/4">
-        <Heading textAlign="center" color="coolGray.700">
-          Save and grow together with Jazika
-        </Heading>
-      </Box>
-      <Spacer />
-      <VStack alignItems="center" space={3} mb="10">
+    <YStack flex={1} ai="center" gap="$5" bg="$background">
+      <H2 width="65%" mt="auto" textAlign="center">
+        Save and grow together with Jazika
+      </H2>
+      <Spacer my="30%" />
+      <YStack gap="$3" mb="$8" ai="center">
         <Button
-          pr="4"
-          minW="75%"
-          _text={{ fontWeight: 'semibold', mb: '0.5' }}
+          minWidth="75%"
+          themeInverse
+          size="$5"
           onPress={() => navigation.navigate('signup')}
-          bg="primary.800"
+          fontWeight="bold"
         >
           Create New Account
         </Button>
         <Button
-          variant="subtle"
-          pr="4"
-          minW="75%"
-          _text={{ color: 'coolGray.800', fontWeight: 'semibold', mb: '0.5' }}
-          onPress={() => handleFn()} //navigation.navigate('restore')}
+          variant="outlined"
+          minWidth="75%"
+          onPress={() => navigation.navigate('restore')}
+          size="$5"
+          fontWeight="bold"
         >
           I have an Account
         </Button>
-      </VStack>
-      <Text fontSize="sm" color="muted.300">
+      </YStack>
+      <Text fontSize="$2" color="$gray8">
         v1.0.0
       </Text>
-    </Box>
+    </YStack>
   );
 }

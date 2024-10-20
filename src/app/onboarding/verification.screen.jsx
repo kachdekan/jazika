@@ -1,4 +1,4 @@
-import { Box, Text, VStack, Spacer, Button } from 'native-base';
+import { YStack, Text, Button, Spinner } from 'tamagui';
 import { CodeInput, ResendTimer } from 'jzk/components';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -14,11 +14,12 @@ export default function VerificationScreen({ navigation, route }) {
   const [codeReady, setCodeReady] = useState(false);
 
   const handleOnFullFill = async (code) => {
-    setIsLoading(true);
     try {
+      console.log(code);
+      setIsLoading(true);
       const credential = auth.PhoneAuthProvider.credential(verificationId, code);
       const res = await auth().signInWithCredential(credential);
-      const { address } = await createKeylessAccount(res.user.phoneNumber, res.user.uid);
+      const address = null; //await createKeylessAccount(res.user.phoneNumber, res.user.uid);
       dispatch(
         setUserDetails({
           id: res.user.uid,
@@ -30,9 +31,11 @@ export default function VerificationScreen({ navigation, route }) {
           address,
         }),
       );
+      setIsLoading(false);
       navigation.navigate('setPasscode');
     } catch (error) {
       console.log('Invalid code.');
+      setIsLoading(false);
     }
   };
 
@@ -45,15 +48,15 @@ export default function VerificationScreen({ navigation, route }) {
   }, [codeReady]);
 
   return (
-    <Box flex={1} bg="white" alignItems="center" justifyContent="center">
-      <VStack space={3} mx={6} mt={10}>
-        <Text fontSize="md" textAlign="center">
+    <YStack flex={1} bg="$background" ai="center" jc="center">
+      <YStack gap="$4" mx="$6" mt="$8">
+        <Text fontSize="$8" textAlign="center">
           Verify your phone number ({phone})
         </Text>
-        <Text color="muted.500">
+        <Text color="$gray12">
           A verification code has been sent to {phone}. Please enter the code below.
         </Text>
-        <Box my={3} alignSelf="center">
+        <YStack my="$3" alignSelf="center">
           <CodeInput
             value={code}
             onTextChange={(code) => setCode(code)}
@@ -63,31 +66,21 @@ export default function VerificationScreen({ navigation, route }) {
             }}
             autoFocus={true}
           />
-        </Box>
+        </YStack>
         <ResendTimer seconds={55} onResend={() => console.log('Code resent')} />
-      </VStack>
-      <Spacer />
+      </YStack>
+      <YStack flex={1} />
       <Button
-        isLoading={isLoading}
-        spinnerPlacement="end"
-        isLoadingText="Verifying"
-        variant="subtle"
-        rounded="3xl"
-        pr="4"
-        minW="65%"
-        my={10}
-        _text={{
-          color: 'primary.600',
-          fontWeight: 'semibold',
-          mb: '0.5',
-        }}
-        _spinner={{
-          color: 'primary.700',
-        }}
-        onPress={(code) => handleOnFullFill(code)}
+        disabled={isLoading}
+        onPress={() => handleOnFullFill()}
+        mb="$8"
+        width="75%"
+        size="$5"
+        themeInverse
+        fontWeight="bold"
       >
-        Set Passcode
+        {isLoading ? 'Verifying...' : 'Verify phone'}
       </Button>
-    </Box>
+    </YStack>
   );
 }
