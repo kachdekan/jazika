@@ -1,35 +1,16 @@
 import { useState, useCallback, useEffect } from 'react';
-import {
-  YStack,
-  Text,
-  Button,
-  ScrollView,
-  Spinner,
-  Sheet,
-  XStack,
-  Avatar,
-  Separator,
-  View,
-} from 'tamagui';
+import { YStack, ScrollView, Spinner } from 'tamagui';
 import { RefreshControl } from 'react-native';
 import {
   FeatureHomeCard,
   TransactionItem,
+  TransactionModal,
   SectionHeader,
   AssetItem,
   NoItems,
 } from 'jzk/components';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  CircleDollarSign,
-  ArrowBigRightDash,
-  ArrowBigDownDash,
-  Menu,
-  ChevronRight,
-  ReceiptText,
-  ExternalLink,
-  X,
-} from '@tamagui/lucide-icons';
+import { CircleDollarSign, ArrowBigRightDash, ArrowBigDownDash, Menu } from '@tamagui/lucide-icons';
 import { txData } from 'jzk/utils/data';
 
 export default function HomeScreen({ navigation }) {
@@ -40,8 +21,7 @@ export default function HomeScreen({ navigation }) {
     balUSD: 9100,
   });
   const [showMore, setShowMore] = useState(false);
-  const [open, setOpen] = React.useState(false);
-  const [position, setPosition] = React.useState(0);
+  const [open, setOpen] = useState(false);
   const [txDetails, setTxDetails] = useState({});
 
   const [transactions, setTransactions] = useState(txData);
@@ -54,6 +34,8 @@ export default function HomeScreen({ navigation }) {
     setRefreshing(true);
     setTimeout(() => setRefreshing(false), 2000);
   }, []);
+
+  console.log('home open', open);
   return (
     <YStack flex={1} bg="$inverse" ai="center">
       <ScrollView
@@ -212,100 +194,7 @@ export default function HomeScreen({ navigation }) {
             </YStack>
           ))}
         </YStack>
-        <Sheet
-          modal
-          open={open}
-          onOpenChange={setOpen}
-          snapPoints={[45]}
-          position={position}
-          onPositionChange={setPosition}
-          dismissOnSnapToBottom
-        >
-          <Sheet.Overlay />
-          <Sheet.Frame>
-            <Sheet.Handle bg="$gray6" mt="$4" width="$10" alignSelf="center" />
-            <YStack gap="$4" px="$6" py="$2">
-              <XStack gap="$3">
-                <Avatar circular>
-                  <Avatar.Image
-                    source={{
-                      uri: 'https://assets.coingecko.com/coins/images/10365/standard/near.jpg',
-                    }}
-                  />
-                  <Avatar.Fallback bg="$gray8" />
-                </Avatar>
-                <XStack justifyContent="space-between" width="84%" mt="$-0.5" alignItems="center">
-                  <YStack>
-                    <Text fontSize="$6">{txDetails.title}</Text>
-                    <Text>{txDetails.date}</Text>
-                  </YStack>
-                  <View padding="$2" onPress={() => console.log('Check Scan')}>
-                    <ExternalLink size={28} color="$gray10" />
-                  </View>
-                </XStack>
-              </XStack>
-              <Separator />
-              {/* User Icon */}
-              <YStack alignItems="center" paddingVertical="$2">
-                <Text fontSize="$9" fontWeight="medium">
-                  {(txDetails.credited ? '+' : '-') +
-                    (txDetails.amount * 1).toFixed(2) +
-                    ' ' +
-                    txDetails.token}
-                </Text>
-                <Text color="$gray11" fontSize="$6">
-                  ≈ 0.00 KES
-                </Text>
-              </YStack>
-              <Separator />
-              {/* Address Display */}
-              <YStack gap="$2">
-                <XStack justifyContent="space-between">
-                  <Text fontSize="$5" color="$gray12">
-                    From
-                  </Text>
-                  <Text
-                    fontSize="$5"
-                    color="$gray12"
-                    textAlign="right"
-                    onPress={() => console.log('Address')}
-                  >
-                    0x1234...7890
-                  </Text>
-                </XStack>
-                <XStack justifyContent="space-between">
-                  <Text fontSize="$5" color="$gray12">
-                    Platform Fee
-                  </Text>
-                  <Text fontSize="$5" color="$gray12" textAlign="right">
-                    10.00 KES
-                  </Text>
-                </XStack>
-                <XStack justifyContent="space-between">
-                  <Text fontSize="$5" color="$gray12">
-                    Network Fee
-                  </Text>
-                  <Text fontSize="$5" color="$gray12" textAlign="right">
-                    2.00 KES
-                  </Text>
-                </XStack>
-                <XStack justifyContent="space-between">
-                  <Text fontSize="$5" color="$gray12">
-                    Tx Hash
-                  </Text>
-                  <Text
-                    fontSize="$5"
-                    color="$gray12"
-                    textAlign="right"
-                    onPress={() => console.log('Tx Hash')}
-                  >
-                    0x1234ff...7890ff
-                  </Text>
-                </XStack>
-              </YStack>
-            </YStack>
-          </Sheet.Frame>
-        </Sheet>
+        <TransactionModal open={open} setOpen={setOpen} tx={txDetails} />
       </ScrollView>
     </YStack>
   );

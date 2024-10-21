@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import DummyScreen from '../dummy.screen';
 import { LoginScreen } from '../wallet';
+import { CreateGroupScreen } from '../groups';
 import { BottomTabs } from './bottom.tabs';
 import { useSelector } from 'react-redux';
 
@@ -23,6 +24,27 @@ export function AppNavigator() {
             component={DummyScreen}
             options={{ headerTitle: '' }}
           />
+        </AppStack.Group>
+      }
+      {
+        //Group Screens
+        <AppStack.Group screenOptions={{ presentation: 'modal' }}>
+          {/*<AppStack.Screen
+            name="joinSpace"
+            component={JoinSpaceScreen}
+            options={{ headerTitle: 'Join a Space' }}
+          />*/}
+          <AppStack.Screen
+            name="createGroup"
+            component={CreateGroupScreen}
+            options={{ headerTitle: 'Create a Group' }}
+          />
+          {/*
+          <AppStack.Screen
+            name="inviteMembers"
+            component={InviteMembersScreen}
+            options={{ headerTitle: 'Invite Members' }}
+          />*/}
         </AppStack.Group>
       }
     </AppStack.Navigator>

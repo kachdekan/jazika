@@ -43,6 +43,7 @@
     "expo-system-ui": "~2.9.4",
     "expo-web-browser": "~12.8.2",
     "libphonenumber-js": "^1.11.11",
+    "nanoid": "3",
     "native-base": "patch:native-base@npm%3A3.4.28#~/.yarn/patches/native-base-npm-3.4.28-a8ecceae4d.patch",
     "near-api-js": "^5.0.1",
     "react": "18.2.0",

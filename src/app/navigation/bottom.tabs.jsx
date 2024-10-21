@@ -4,18 +4,18 @@ import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { HomeScreen } from '../wallet';
 import { AccountScreen } from '../account';
-import { GroupsLandingScreen } from '../groups';
+import { GroupsLandingScreen, GroupHomeScreen } from '../groups';
 import DummyScreen from '../dummy.screen';
 import { Icon, Box, Text, Avatar, Pressable, HStack } from 'native-base';
 
 const Tab = createBottomTabNavigator();
 
 export function BottomTabs() {
-  const hasGroups = false;
+  const hasGroups = true;
   return (
     <Tab.Navigator screenOptions={TabScreenOptions}>
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Groups" component={hasGroups ? DummyScreen : GroupsLandingScreen} />
+      <Tab.Screen name="Groups" component={hasGroups ? GroupHomeScreen : GroupsLandingScreen} />
       <Tab.Screen name="Account" component={AccountScreen} />
     </Tab.Navigator>
   );

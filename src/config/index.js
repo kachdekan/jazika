@@ -1,2 +1,2 @@
 export * from './constants';
-//export * from './appconfig';
+export * from './appconfig';
