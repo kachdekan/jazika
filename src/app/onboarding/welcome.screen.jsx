@@ -1,11 +1,21 @@
 import { YStack, Button, Text, View, Spacer, Theme, H2 } from 'tamagui';
-import { createAccountUsingHelper } from 'jzk/services';
+import { generateAddresses } from '../../../scripts';
+import { createAccount, sign } from 'jzk/services';
 
 export default function WelcomeScreen({ navigation }) {
+  const handleFn1 = async () => {
+    const account = await createAccount('+2547123783544', 'very-uniquire-uid2');
+    console.log(account);
+  };
   const handleFn = async () => {
     console.log('Called');
-    const tx = await createAccountUsingHelper('+2541234567890', 'some-unique-001');
-    console.log(tx);
+    const samplePayload = new Array(32);
+    for (let i = 0; i < samplePayload.length; i++) {
+      samplePayload[i] = Math.floor(Math.random() * 255);
+    }
+    const res = await sign('easycoin8945.testnet', samplePayload, 'jazika/1');
+    console.log('signature', res);
+    //console.log(tx);
   };
   return (
     <YStack flex={1} ai="center" gap="$5" bg="$background">
@@ -18,7 +28,7 @@ export default function WelcomeScreen({ navigation }) {
           minWidth="75%"
           themeInverse
           size="$5"
-          onPress={() => navigation.navigate('signup')}
+          onPress={() => handleFn1()} //navigation.navigate('signup')}
           fontWeight="bold"
         >
           Create New Account
@@ -26,7 +36,7 @@ export default function WelcomeScreen({ navigation }) {
         <Button
           variant="outlined"
           minWidth="75%"
-          onPress={() => navigation.navigate('restore')}
+          onPress={() => handleFn()} //navigation.navigate('restore')}
           size="$5"
           fontWeight="bold"
         >

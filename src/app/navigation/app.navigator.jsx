@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 const AppStack = createNativeStackNavigator();
 
 export function AppNavigator() {
-  const isLoggedIn = true; //useSelector((s) => s.wallet.isLoggedIn);
+  const isLoggedIn = false; //useSelector((s) => s.wallet.isLoggedIn);
   return (
     <AppStack.Navigator>
       <AppStack.Screen

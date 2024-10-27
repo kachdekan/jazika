@@ -28,7 +28,7 @@ export function Navigation() {
     });
     return subscriber;
   }, [dispatch]);*/
-  const hasAccount = true; //!!(address && id && tokenIsSet);
+  const hasAccount = false; //!!(address && id && tokenIsSet);
 
   return (
     <NavigationContainer>
