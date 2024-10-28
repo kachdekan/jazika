@@ -14,6 +14,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@celo-tools/celo-ethers-wrapper": "^1.0.0",
     "@ethersproject/shims": "^5.7.0",
     "@expo/vector-icons": "^14.0.0",
     "@noble/ed25519": "^2.1.0",
@@ -45,7 +46,7 @@
     "expo-status-bar": "~1.11.1",
     "expo-system-ui": "~2.9.4",
     "expo-web-browser": "~12.8.2",
-    "hash.js": "^1.1.7",
+    "js-sha3": "^0.9.3",
     "libphonenumber-js": "^1.11.11",
     "nanoid": "3",
     "native-base": "patch:native-base@npm%3A3.4.28#~/.yarn/patches/native-base-npm-3.4.28-a8ecceae4d.patch",

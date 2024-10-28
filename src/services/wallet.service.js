@@ -158,7 +158,7 @@ export async function sign(accountId, payload, path) {
   console.log('sign payload', payload.length > 200 ? payload.length : payload.toString());
   console.log('with path', path);
   console.log('this may take approx. 30 seconds to complete');
-  console.log('argument to sign: ', args);
+  //console.log('argument to sign: ', args);
 
   let res;
   try {
@@ -178,7 +178,7 @@ export async function sign(accountId, payload, path) {
   if ('SuccessValue' in res.status) {
     const successValue = res.status.SuccessValue;
     const decodedValue = Buffer.from(successValue, 'base64').toString();
-    console.log('decoded value: ', decodedValue);
+    //console.log('decoded value: ', decodedValue);
     const { big_r, s: S, recovery_id } = JSON.parse(decodedValue);
     const r = Buffer.from(big_r.affine_point.substring(2), 'hex');
     const s = Buffer.from(S.scalar, 'hex');
