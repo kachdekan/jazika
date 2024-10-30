@@ -4094,6 +4094,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@openzeppelin/contracts@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "@openzeppelin/contracts@npm:5.1.0"
+  checksum: 10/c3954d09b206af23a98d352177b49e4b2796a818ee01f082b223d54e6d394b3741a4ea6012570359d2a705d5e932a7b906ee38b64e3987ababfa73bcaa5a4805
+  languageName: node
+  linkType: hard
+
 "@pkgjs/parseargs@npm:^0.11.0":
   version: 0.11.0
   resolution: "@pkgjs/parseargs@npm:0.11.0"
@@ -12515,6 +12522,7 @@ __metadata:
     "@ethersproject/shims": "npm:^5.7.0"
     "@expo/vector-icons": "npm:^14.0.0"
     "@noble/ed25519": "npm:^2.1.0"
+    "@openzeppelin/contracts": "npm:^5.1.0"
     "@react-native-async-storage/async-storage": "npm:1.21.0"
     "@react-native-firebase/app": "npm:^21.0.0"
     "@react-native-firebase/auth": "npm:^21.0.0"

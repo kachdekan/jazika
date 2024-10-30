@@ -68,6 +68,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@openzeppelin/contracts": "^5.1.0",
     "@tamagui/babel-plugin": "^1.115.5",
     "@types/jest": "^29.5.12",
     "@types/react": "~18.2.45",
