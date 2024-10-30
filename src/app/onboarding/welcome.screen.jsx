@@ -1,21 +1,18 @@
 import { YStack, Button, Text, View, Spacer, Theme, H2 } from 'tamagui';
 import { generateAddresses } from '../../../scripts';
 import { createAccount, sign } from 'jzk/services';
+import celo from '../../services/celo.service';
 
 export default function WelcomeScreen({ navigation }) {
   const handleFn1 = async () => {
-    const account = await createAccount('+2547123783544', 'very-uniquire-uid2');
-    console.log(account);
+    const tx = await celo.repayLoan('0xe5b31418a5cfcbb32bd530feb0acaf2ce86d69e8', 1);
+    console.log(tx);
   };
   const handleFn = async () => {
     console.log('Called');
-    const samplePayload = new Array(32);
-    for (let i = 0; i < samplePayload.length; i++) {
-      samplePayload[i] = Math.floor(Math.random() * 255);
-    }
-    const res = await sign('easycoin8945.testnet', samplePayload, 'jazika/1');
-    console.log('signature', res);
-    //console.log(tx);
+    const tx = await generateAddresses('easycoin8945.testnet');
+    //console.log('signature', res);
+    console.log(tx);
   };
   return (
     <YStack flex={1} ai="center" gap="$5" bg="$background">

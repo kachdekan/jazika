@@ -2,6 +2,7 @@ import { StaticCeloProvider } from '@celo-tools/celo-ethers-wrapper';
 import { BigNumber, ethers } from 'ethers';
 import { fetchJson } from '../../scripts/utils';
 import { sign } from './wallet.service';
+import jazikaGroupsABI from '../abis/JazikaGroups.json';
 
 const celo = {
   name: 'alfajores',
@@ -18,6 +19,7 @@ const celo = {
   },
   contracts: {
     minGasPrice: '0xd0Bf87a5936ee17014a057143a494Dc5C5d51E5e',
+    groups: '0x6596178c648C4AA57bA689A1e735e775d35951a8',
   },
 
   getProvider: function () {
@@ -61,18 +63,13 @@ const celo = {
     return balances;
   },
 
-  encodeData: async function (method, args, ret) {
-    const abi = [`function ${method}(${Object.keys(args).join(',')}) returns (${ret.join(',')})`];
-    const iface = new ethers.utils.Interface(abi);
-    const allArgs = [];
-    const argValues = Object.values(args);
-    for (let i = 0; i < argValues.length; i++) {
-      allArgs.push(argValues[i]);
-    }
-    console.log(abi[0], 'with args', allArgs);
+  getContract: function () {
+    const provider = this.getProvider();
+    const iface = new ethers.utils.Interface(jazikaGroupsABI);
+    const contract = new ethers.Contract(this.contracts.groups, jazikaGroupsABI, provider);
     return {
+      contract,
       iface,
-      data: iface.encodeFunctionData(method, allArgs),
     };
   },
 
@@ -107,7 +104,9 @@ const celo = {
       const hash = await this.getProvider().send('eth_sendRawTransaction', [
         ethers.utils.serializeTransaction(baseTx, sig),
       ]);
+      const receipt = await this.getProvider().waitForTransaction(hash);
       console.log('explorer link', `${this.explorer}/tx/${hash}`);
+      return receipt;
     } catch (e) {
       if (/nonce too low/gi.test(JSON.stringify(e))) {
         return console.log('tx has been tried');
@@ -153,32 +152,137 @@ const celo = {
     await this.sendTransaction(from, baseTx);
   },
 
-  read: async function (contract, method, args, ret) {
+  //Create Group
+  createGroup: async function (address, groupName, inviteCode) {
+    const { contract, iface } = this.getContract();
     const provider = this.getProvider();
-    console.log('Read contract:', contract);
-    const { data, iface } = this.encodeData(method, args, ret);
-    const res = await provider.call({
-      contract,
+    const data = iface.encodeFunctionData('createGroup', [groupName, inviteCode]);
+    const nonce = await provider.getTransactionCount(address);
+    const gasPrice = await provider.getGasPrice();
+    const tx = await this.sendTransaction(address, {
+      to: this.contracts.groups,
       data,
+      nonce,
+      value: 0,
+      gasPrice,
+      gasLimit: 1000000,
+      chainId: this.chainId,
     });
-    console.log(res);
-    const decoded = iface.decodeFunctionResult(method, res);
-    console.log(decoded.toString());
+    return tx;
   },
 
-  //Create Group
-
-  //Add members
+  //Get Member Group
+  getMemberGroupId: async function (address) {
+    const { contract } = this.getContract();
+    const result = await contract.getMemberGroupId(address);
+    return result;
+  },
 
   //Join Group
+  joinGroup: async function (address, groupID, inviteCode) {
+    const { contract, iface } = this.getContract();
+    const provider = this.getProvider();
+    //encode function data using contract interface
+    //const data = iface.encodeFunctionData('joinGroup', [groupID, inviteCode]);
+    const data = contract.interface.encodeFunctionData('joinGroup', [groupID, inviteCode]);
+    const nonce = await provider.getTransactionCount(address);
+    const gasPrice = await provider.getGasPrice();
+    const tx = await this.sendTransaction(address, {
+      to: this.contracts.groups,
+      data,
+      nonce,
+      value: 0,
+      gasPrice,
+      gasLimit: 1000000,
+      chainId: this.chainId,
+    });
+    return tx;
+  },
 
   //Get Member GroupID
+  getMemberGroupID: async function (address) {
+    const { contract } = this.getContract();
+    const result = await contract.getMemberGroupId(address);
+    return result.toNumber();
+  },
 
   //Request Loan
+  requestLoan: async function (address, amount) {
+    const { contract, iface } = this.getContract();
+    const provider = this.getProvider();
+    const data = iface.encodeFunctionData('requestLoan', [
+      ethers.utils.parseUnits(amount.toString()),
+    ]);
+    const nonce = await provider.getTransactionCount(address);
+    const gasPrice = await provider.getGasPrice();
+    const tx = await this.sendTransaction(address, {
+      to: this.contracts.groups,
+      data,
+      nonce,
+      value: 0,
+      gasPrice,
+      gasLimit: 1000000,
+      chainId: this.chainId,
+    });
 
-  //Get Member Loan ID
+    return tx;
+  },
+
+  //Get Member Loan Balance
+  getMemberLoanBalance: async function (address) {
+    const { contract } = this.getContract();
+    const result = await contract.getMemberLoanBalance(address);
+    return result.toNumber();
+  },
+
+  //Get Group Loan Balance
+  getGroupLoanBalance: async function (groupID) {
+    const { contract } = this.getContract();
+    const result = await contract.getGroupLoanBalance(groupID);
+    return result.toNumber();
+  },
 
   //Repay Loan
+  repayLoan: async function (address, amount) {
+    const { contract, iface } = this.getContract();
+    const provider = this.getProvider();
+    //approve spending of token
+    const tokenABI = ['function approve(address spender, uint256 amount) public returns (bool)'];
+    const token = new ethers.Contract(this.tokens.CKES, tokenABI, provider);
+    const approveData = token.interface.encodeFunctionData('approve', [
+      this.contracts.groups,
+      ethers.utils.parseUnits(amount.toString()),
+    ]);
+    const approveNonce = await provider.getTransactionCount(address);
+    const approveTx = await this.sendTransaction(address, {
+      to: this.tokens.CKES,
+      data: approveData,
+      nonce: approveNonce,
+      value: 0,
+      gasPrice: await provider.getGasPrice(),
+      gasLimit: 1000000,
+      chainId: this.chainId,
+    });
+    //console.log(approveTx);
+
+    const data = iface.encodeFunctionData('repayLoan', [
+      ethers.utils.parseUnits(amount.toString()),
+    ]);
+
+    const nonce = await provider.getTransactionCount(address);
+    const gasPrice = await provider.getGasPrice();
+    const tx = await this.sendTransaction(address, {
+      to: this.contracts.groups,
+      data,
+      nonce,
+      value: 0,
+      gasPrice,
+      gasLimit: 1000000,
+      chainId: this.chainId,
+    });
+
+    return tx;
+  },
 };
 
 export default celo;
