@@ -11,7 +11,8 @@ const initialState = {
     phone: null,
     country: null,
     created: null,
-    address: null,
+    account: null,
+    addresses: null,
     photoURL: null,
   },
 };
@@ -21,12 +22,13 @@ const walletSlice = createSlice({
   initialState,
   reducers: {
     setUserDetails: (state, action) => {
-      const { id, names, email, phone, photoUri, country, address } = action.payload;
+      const { id, names, email, phone, photoUri, country, addresses, account } = action.payload;
       state.userDetails.id = id;
       state.userDetails.phone = phone;
       state.userDetails.country = country;
       state.userDetails.created = Date.now();
-      state.userDetails.address = address;
+      state.userDetails.account = account;
+      state.userDetails.addresses = addresses;
       if (email) state.userDetails.email = email;
       if (photoUri) state.userDetails.photoURL = photoUri;
       if (names) state.userDetails.names = names;

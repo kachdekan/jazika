@@ -1,5 +1,5 @@
 const { customAlphabet } = require('nanoid');
-export const generateId = customAlphabet('1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ', 8);
+export const generateId = customAlphabet('1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ', 4);
 
 export const generateSpaceId = () => {
   const idPart = customAlphabet('1234567890', 6);

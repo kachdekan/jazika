@@ -4,13 +4,12 @@ import { useState } from 'react';
 import { ChevronDown } from '@tamagui/lucide-icons';
 
 const AssetLogos = {
-  Shillings: 'https://assets.coingecko.com/coins/images/29789/standard/kag-currency-ticker.png',
+  Shillings: 'https://assets.coingecko.com/coins/images/38052/standard/cKES_200x200.png',
   Dollars: 'https://assets.coingecko.com/coins/images/325/standard/Tether.png',
   NEAR: 'https://assets.coingecko.com/coins/images/10365/standard/near.jpg',
   ETH: 'https://assets.coingecko.com/coins/images/279/standard/ethereum.png',
   BTC: 'https://assets.coingecko.com/coins/images/1/standard/bitcoin.png',
-  AURORA: 'https://assets.coingecko.com/coins/images/20582/standard/aurora.jpeg',
-  CELO: 'https://assets.coingecko.com/coins/images/11090/standard/Celo.png',
+  CELO: 'https://assets.coingecko.com/coins/images/11090/standard/InjXBNx9_400x400.jpg',
 };
 
 const AssetItem = (props) => {
@@ -36,7 +35,7 @@ const AssetItem = (props) => {
               <Avatar.Fallback bg="$gray8" />
             </Avatar>
             <Avatar circular size="$1.5" ml="$6" mt="$-5" zIndex="$1">
-              <Avatar.Image source={{ uri: AssetLogos['AURORA'] }} />
+              <Avatar.Image source={{ uri: AssetLogos['CELO'] }} />
               <Avatar.Fallback bg="$gray8" />
             </Avatar>
           </View>
@@ -70,7 +69,9 @@ const AssetItem = (props) => {
             </YStack>
             <YStack mr={2}>
               <Text fontSize="$7" fontWeight="bold" textAlign="right">
-                {props.amount.toFixed(2)}
+                {props.name === 'Dollars' || props.name === 'Shillings'
+                  ? props.amount.toFixed(2)
+                  : props.amount.toFixed(4)}
               </Text>
               <Text color="$gray10" textAlign="right">
                 {props.eqAmount}

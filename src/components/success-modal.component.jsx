@@ -10,7 +10,7 @@ const SuccessModal = ({ isOpen, onClose, message, screen, scrnOptions }) => {
         <Modal.Body alignItems="center">
           <Icon
             as={Ionicons}
-            name={scrnOptions.isSuccess ? 'md-checkmark-circle' : 'close-circle'}
+            name={scrnOptions.isSuccess ? 'checkmark-circle-outline' : 'close-circle'}
             size="6xl"
             color={scrnOptions.isSuccess ? 'success.600' : 'danger.600'}
           />

@@ -1,14 +1,22 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import DummyScreen from '../dummy.screen';
 import { LoginScreen } from '../wallet';
-import { CreateGroupScreen } from '../groups';
+import {
+  CreateGroupScreen,
+  ApplyLoanStep1,
+  ApplyLoanStep2,
+  ApplyLoanStep3,
+  ApplyLoanStep4,
+  ApplyLoanStep5,
+  RepayLoanScreen,
+} from '../groups';
 import { BottomTabs } from './bottom.tabs';
 import { useSelector } from 'react-redux';
 
 const AppStack = createNativeStackNavigator();
 
 export function AppNavigator() {
-  const isLoggedIn = false; //useSelector((s) => s.wallet.isLoggedIn);
+  const isLoggedIn = useSelector((s) => s.wallet.isLoggedIn);
   return (
     <AppStack.Navigator>
       <AppStack.Screen
@@ -45,6 +53,42 @@ export function AppNavigator() {
             component={InviteMembersScreen}
             options={{ headerTitle: 'Invite Members' }}
           />*/}
+          <AppStack.Screen
+            name="appyLoanS1"
+            component={ApplyLoanStep1}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <AppStack.Screen
+            name="appyLoanS2"
+            component={ApplyLoanStep2}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <AppStack.Screen
+            name="appyLoanS3"
+            component={ApplyLoanStep3}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <AppStack.Screen
+            name="appyLoanS4"
+            component={ApplyLoanStep4}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <AppStack.Screen
+            name="appyLoanS5"
+            component={ApplyLoanStep5}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <AppStack.Screen name="repayLoan" component={RepayLoanScreen} />
         </AppStack.Group>
       }
     </AppStack.Navigator>

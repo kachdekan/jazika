@@ -1,4 +1,4 @@
-import { Box, Text } from 'native-base';
+import { Box, Text, HStack, Avatar, VStack } from 'native-base';
 import { useLayoutEffect, useState, useCallback } from 'react';
 import { TouchableOpacity, View, StyleSheet } from 'react-native';
 import { ScrollView, YStack } from 'tamagui';
@@ -11,16 +11,19 @@ import {
   HandCoins,
   Menu,
 } from '@tamagui/lucide-icons';
-import { GroupHomeCard, SectionHeader } from 'jzk/components';
+import { GroupHomeCard, SectionHeader, NoItems } from 'jzk/components';
 import { RefreshControl } from 'react-native';
+import { useSelector } from 'react-redux';
 
 export default function GroupHomeScreen({ navigation }) {
-  const [groupName, setGroupName] = useState('Jazika Group');
+  const { account, addresses } = useSelector((state) => state.wallet.userDetails);
+  const groupDetails = useSelector((state) => state.spaces.roscaDetails);
+  const [groupName, setGroupName] = useState(groupDetails.spaceName);
   const [isLoadingBal, setIsLoadingBal] = useState(false);
   const [balance, setBalance] = useState({
-    aptBal: 0,
-    jkesBal: 0,
-    balUSD: 910000,
+    USDTBal: 0,
+    CKESBal: 10000 - groupDetails.loanBalance,
+    balUSD: (10000 - groupDetails.loanBalance) * 0.0078,
   });
   const [refreshing, setRefreshing] = useState(false);
   const handleTitlePress = () => {
@@ -42,6 +45,7 @@ export default function GroupHomeScreen({ navigation }) {
     setRefreshing(true);
     setTimeout(() => setRefreshing(false), 2000);
   }, []);
+  const txDate = new Date(Date.now() - 30 * 1000).toLocaleString();
   return (
     <Box flex={1} bg="muted.100" alignItems="center">
       <ScrollView
@@ -54,7 +58,9 @@ export default function GroupHomeScreen({ navigation }) {
             color="$gray12"
             bg="$background"
             balance={balance.balUSD.toFixed(2)}
-            apprxBalance={isLoadingBal ? 'isFetchingBal' : (balance.balUSD * 1).toFixed(2)}
+            apprxBalance={isLoadingBal ? 'isFetchingBal' : (balance.CKESBal * 1).toFixed(2)}
+            savings={0.0}
+            loans={groupDetails.loanBalance * 1}
             btn1={{
               icon: <CircleDollarSign size={30} />,
               color: '$green5',
@@ -65,14 +71,14 @@ export default function GroupHomeScreen({ navigation }) {
               icon: <HandCoins size={30} />,
               color: '$orange5',
               name: 'Borrow',
-              screen: 'transferFunds',
+              screen: 'appyLoanS1',
               params: balance,
             }}
             btn3={{
               icon: <Coins size={30} />,
               color: '$red5',
               name: 'Repay',
-              screen: 'withdrawFunds',
+              screen: 'repayLoan',
               params: balance,
             }}
             btn4={{
@@ -90,6 +96,43 @@ export default function GroupHomeScreen({ navigation }) {
           actionText="See all"
           action={() => console.log('See all')}
         />
+        {balance.CKESBal < 10000 ? (
+          <Box bg="white" rounded="2xl">
+            <HStack space={3} my={2} mx={3} alignItems="center">
+              <Avatar
+                bg={true ? 'primary.100' : 'orange.100'}
+                _text={{ color: true ? 'primary.800' : 'orange.800' }}
+              >
+                LR
+              </Avatar>
+              <Box flexDirection="row" justifyContent="space-between" width="84%" mt="-0.5">
+                <VStack>
+                  <Text fontWeight="semibold" color="warmGray.800">
+                    Loan Requested
+                  </Text>
+                  <Text>{txDate}</Text>
+                </VStack>
+                <VStack mr={2}>
+                  <Text fontWeight="semibold" color="warmGray.800" textAlign="right">
+                    {groupDetails.loanBalance} CKES
+                  </Text>
+                  <Text color="blueGray.800" textAlign="right">
+                    {groupDetails.loanBalance} KES
+                  </Text>
+                </VStack>
+              </Box>
+            </HStack>
+          </Box>
+        ) : (
+          <Box width="85%" alignSelf="center">
+            <NoItems
+              title="No activity yet"
+              message="You have no activity in this group yet. Check back later."
+              action={() => console.log('Action')}
+              actionText="Get started"
+            />
+          </Box>
+        )}
       </ScrollView>
     </Box>
   );

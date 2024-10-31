@@ -25,6 +25,8 @@ const GroupHomeCard = ({
   itemBottom,
   apprxBalance,
   balance,
+  loans,
+  savings,
 }) => {
   const navigation = useNavigation();
   const bal = apprxBalance === 'isFetchingBal' ? [' ...', '..'] : apprxBalance.split('.');
@@ -75,7 +77,7 @@ const GroupHomeCard = ({
         <XStack justifyContent="space-between" padding="$4">
           <Text fontSize="$6">Savings</Text>
           <XStack ai="center">
-            <Text fontSize="$6">100 KES</Text>
+            <Text fontSize="$6">{savings.toFixed(2)} KES</Text>
             <ChevronRight size={20} />
           </XStack>
         </XStack>
@@ -93,7 +95,7 @@ const GroupHomeCard = ({
             <XStack justifyContent="space-between">
               <Text fontSize="$6">Loans</Text>
               <XStack ai="center">
-                <Text fontSize="$6">100 KES</Text>
+                <Text fontSize="$6">{loans.toFixed(2)} KES</Text>
                 <ChevronRight size={20} />
               </XStack>
             </XStack>

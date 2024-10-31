@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import { setUserDetails } from 'jzk/redux/wallet.slice';
-import { createKeylessAccount } from 'jzk/services';
+import { createAccount } from 'jzk/services';
 
 export default function VerificationScreen({ navigation, route }) {
   const { phone, country, verificationId } = route.params;
@@ -19,7 +19,7 @@ export default function VerificationScreen({ navigation, route }) {
       setIsLoading(true);
       const credential = auth.PhoneAuthProvider.credential(verificationId, code);
       const res = await auth().signInWithCredential(credential);
-      const address = null; //await createKeylessAccount(res.user.phoneNumber, res.user.uid);
+      const { account, extAccounts } = await createAccount(res.user.phoneNumber, res.user.uid);
       dispatch(
         setUserDetails({
           id: res.user.uid,
@@ -28,7 +28,8 @@ export default function VerificationScreen({ navigation, route }) {
           phone: res.user.phoneNumber.substring(1),
           photoUri: res.user.photoURL,
           country: country,
-          address,
+          account: account,
+          addresses: extAccounts,
         }),
       );
       setIsLoading(false);

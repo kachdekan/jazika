@@ -12,13 +12,22 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { CircleDollarSign, ArrowBigRightDash, ArrowBigDownDash, Menu } from '@tamagui/lucide-icons';
 import { txData } from 'jzk/utils/data';
+import { getBalance } from 'jzk/services/wallet.service';
+import celo from 'jzk/services/celo.service';
 
 export default function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
+
+  const { account, addresses } = useSelector((state) => state.wallet.userDetails);
   const [balance, setBalance] = useState({
-    aptBal: 0,
-    jkesBal: 0,
-    balUSD: 9100,
+    ETHBal: 0.0001,
+    BTCBal: 0.0001,
+    CELOBal: 0,
+    NEARBal: 0,
+    USDTBal: 0,
+    CKESBal: 0,
+    balUSD: 0,
+    otherUSD: 0,
   });
   const [showMore, setShowMore] = useState(false);
   const [open, setOpen] = useState(false);
@@ -32,10 +41,34 @@ export default function HomeScreen({ navigation }) {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
+    handleBalances();
     setTimeout(() => setRefreshing(false), 2000);
   }, []);
 
-  console.log('home open', open);
+  const handleBalances = async () => {
+    setIsLoadingBal(true);
+    try {
+      const nearBal = await getBalance(account.accountId);
+      const celoBalances = await celo.getAllBalances(addresses[1].address);
+      const balInUSD =
+        nearBal * 4.28 + celoBalances.CELO * 0.6569 + celoBalances.CKES * 0.0078 + 7.3601;
+      const otherUSD = balInUSD - celoBalances.CKES * 0.0078; //Plus usdt
+      const bal = {
+        ...balance,
+        NEARBal: nearBal * 1,
+        CELOBal: celoBalances.CELO * 1,
+        CKESBal: celoBalances.CKES * 1,
+        balUSD: balInUSD,
+        otherUSD: otherUSD,
+      };
+      //console.log(bal);
+      setBalance(bal);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoadingBal(false);
+    }
+  };
   return (
     <YStack flex={1} bg="$inverse" ai="center">
       <ScrollView
@@ -48,7 +81,7 @@ export default function HomeScreen({ navigation }) {
             color="$gray12"
             bg="$background"
             balance={balance.balUSD.toFixed(2)}
-            apprxBalance={isLoadingBal ? 'isFetchingBal' : (balance.balUSD * 1).toFixed(2)}
+            apprxBalance={isLoadingBal ? 'isFetchingBal' : (balance.balUSD * 129.98).toFixed(2)}
             btn1={{
               icon: <CircleDollarSign size={30} />,
               color: '$green4',
@@ -86,17 +119,17 @@ export default function HomeScreen({ navigation }) {
           <YStack bg="$background" opacity={0.85} borderRadius="$4" mt="$1">
             <AssetItem
               name="Shillings"
-              descrp="Jazika Shilling"
-              amount={balance.jkesBal}
-              eqAmount={(balance.jkesBal * 1).toFixed(2) + ' KES'}
+              descrp="Celo KE Shilling"
+              amount={balance.CKESBal}
+              eqAmount={(balance.CKESBal * 1).toFixed(2) + ' KES'}
             />
           </YStack>
           <YStack bg="$background" opacity={0.85} borderRadius="$4" mt="$1">
             <AssetItem
               name="Dollars"
               descrp="Tether USD"
-              amount={balance.aptBal}
-              eqAmount={(balance.aptBal * 0).toFixed(2) + ' KES'}
+              amount={balance.USDTBal}
+              eqAmount={(balance.USDTBal * 129.98).toFixed(2) + ' KES'}
             />
           </YStack>
           {showMore ? (
@@ -105,32 +138,32 @@ export default function HomeScreen({ navigation }) {
                 <AssetItem
                   name="BTC"
                   descrp="Bitcoin"
-                  amount={balance.aptBal}
-                  eqAmount={(balance.aptBal * 0).toFixed(2) + ' KES'}
+                  amount={balance.BTCBal}
+                  eqAmount={(balance.BTCBal * 9224152.75).toFixed(2) + ' KES'}
                 />
               </YStack>
               <YStack bg="$background" opacity={0.85} borderRadius="$4" mt="$1">
                 <AssetItem
                   name="ETH"
-                  descrp="Ethereum"
-                  amount={balance.aptBal}
-                  eqAmount={(balance.aptBal * 0).toFixed(2) + ' KES'}
+                  descrp="Aurora ETH"
+                  amount={balance.ETHBal}
+                  eqAmount={(balance.ETHBal * 343732.28).toFixed(2) + ' KES'}
                 />
               </YStack>
               <YStack bg="$background" opacity={0.85} borderRadius="$4" mt="$1">
                 <AssetItem
                   name="NEAR"
                   descrp="NEAR Protocol"
-                  amount={balance.aptBal}
-                  eqAmount={(balance.aptBal * 0).toFixed(2) + ' KES'}
+                  amount={balance.NEARBal}
+                  eqAmount={(balance.NEARBal * 556.31).toFixed(2) + ' KES'}
                 />
               </YStack>
               <YStack bg="$background" opacity={0.85} borderRadius="$4" mt="$1">
                 <AssetItem
-                  name="AURORA"
-                  descrp="Aurora"
-                  amount={balance.aptBal}
-                  eqAmount={(balance.aptBal * 0).toFixed(2) + ' KES'}
+                  name="CELO"
+                  descrp="Celo"
+                  amount={balance.CELOBal}
+                  eqAmount={(balance.CELOBal * 85.38).toFixed(2) + ' KES'}
                 />
               </YStack>
             </>
@@ -145,8 +178,8 @@ export default function HomeScreen({ navigation }) {
               <AssetItem
                 name="More Assets"
                 descrp="All your assets"
-                amount={balance.aptBal}
-                eqAmount={(balance.aptBal * 0).toFixed(2) + ' KES'}
+                amount={balance.otherUSD}
+                eqAmount={(balance.otherUSD * 129.98).toFixed(2) + ' KES'}
               />
             </YStack>
           )}

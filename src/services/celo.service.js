@@ -3,6 +3,7 @@ import { BigNumber, ethers } from 'ethers';
 import { fetchJson } from '../../scripts/utils';
 import { sign } from './wallet.service';
 import jazikaGroupsABI from '../abis/JazikaGroups.json';
+import { store } from '../redux';
 
 const celo = {
   name: 'alfajores',
@@ -75,10 +76,12 @@ const celo = {
 
   sendTransaction: async function (address, baseTx) {
     //create hash of unsigned TX to sign -> payload
+    // get account id from state
+    const accountId = store.getState().wallet.userDetails.account.accountId;
     const unsignedTx = ethers.utils.serializeTransaction(baseTx);
     const txHash = ethers.utils.keccak256(unsignedTx);
     const payload = Object.values(ethers.utils.arrayify(txHash));
-    const sig = await sign('easycoin8945.testnet', payload, this.path);
+    const sig = await sign(accountId, payload, this.path);
     if (!sig) return;
 
     sig.r = '0x' + sig.r.toString('hex');
@@ -199,11 +202,11 @@ const celo = {
     return tx;
   },
 
-  //Get Member GroupID
-  getMemberGroupID: async function (address) {
+  //Get Group
+  getGroup: async function (groupID) {
     const { contract } = this.getContract();
-    const result = await contract.getMemberGroupId(address);
-    return result.toNumber();
+    const result = await contract.groups(groupID);
+    return result;
   },
 
   //Request Loan
@@ -232,7 +235,7 @@ const celo = {
   getMemberLoanBalance: async function (address) {
     const { contract } = this.getContract();
     const result = await contract.getMemberLoanBalance(address);
-    return result.toNumber();
+    return result;
   },
 
   //Get Group Loan Balance

@@ -25,7 +25,7 @@ const spacesInitialState = {
     creator: '0x00', //creator user address
   },
   roscaDetails: {},
-  loanPool: null,
+  loanRequest: {},
   spaceInvites: [],
 };
 
@@ -70,6 +70,7 @@ const spacesSlice = createSlice({
     },
     setRoscaDetails: (state, { payload }) => {
       state.roscaDetails = payload;
+      console.log(payload);
     },
     setHasSpaces: (state, { payload }) => {
       state.userSpaces.hasSpaces = payload;
@@ -81,6 +82,22 @@ const spacesSlice = createSlice({
 
     setSpaceInvites: (state, { payload }) => {
       state.spaceInvites = payload;
+    },
+    setLoanAmountTenor: (state, { payload }) => {
+      state.loanRequest.amount = payload.amount;
+      state.loanRequest.tenor = 30 * payload.duration;
+      state.loanRequest.duration = payload.duration;
+      state.loanRequest.interest = 0.075 * payload.duration * payload.amount;
+    },
+    setLoanInstalments: (state, { payload }) => {
+      const duration = state.loanRequest.duration;
+      const numberOfInstallments = {
+        Daily: 30 * duration,
+        Weekly: 4 * duration,
+        Monthly: 1 * duration,
+      };
+      state.loanRequest.instalments = numberOfInstallments[payload.freqency];
+      state.loanRequest.freqency = payload.freqency;
     },
   },
 });
@@ -96,6 +113,8 @@ export const {
   setHasSpaces,
   setLoanPool,
   setSpaceInvites,
+  setLoanAmountTenor,
+  setLoanInstalments,
 } = spacesSlice.actions;
 
 //Created action

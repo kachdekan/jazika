@@ -17,11 +17,11 @@ import * as WebBrowser from 'expo-web-browser';
 import auth from '@react-native-firebase/auth';
 
 export default function AccountScreen({ navigation }) {
-  const { address, phone } = useSelector((s) => s.wallet.userDetails);
+  const { account, phone } = useSelector((s) => s.wallet.userDetails);
   const toast = useToast();
 
   const copyToClipboard = async () => {
-    await Clipboard.setStringAsync(address);
+    await Clipboard.setStringAsync(account.accountId);
     toast.show({
       title: 'Address copied to clipboard',
       status: 'success',
@@ -34,7 +34,7 @@ export default function AccountScreen({ navigation }) {
     {
       title: phone,
       icon: 'person',
-      description: address,
+      description: account.accountId,
       data: [
         {
           title: 'Edit Profile',
@@ -138,18 +138,14 @@ export default function AccountScreen({ navigation }) {
         renderSectionHeader={({ section: { title, icon, description } }) => (
           <Box maxW="90%" mt={3} mb={2}>
             {icon === 'person' ? (
-              <HStack alignItems="center" space={6}>
+              <HStack alignItems="center" justifyContent="space-between">
                 <Stack>
                   <Text fontSize="lg" textAlign="left">
                     +{title}
                   </Text>
-                  {description ? (
-                    <Text fontSize="sm" maxW="90%">
-                      {description}
-                    </Text>
-                  ) : null}
+                  {description ? <Text fontSize="md">{description}</Text> : null}
                 </Stack>
-                <Pressable p={3} mt={4} onPress={() => copyToClipboard()}>
+                <Pressable p={3} onPress={() => copyToClipboard()}>
                   <Icon as={Ionicons} name="copy-outline" size="lg" color="text.400" />
                 </Pressable>
               </HStack>

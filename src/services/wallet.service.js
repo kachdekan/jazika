@@ -2,10 +2,10 @@ import * as nearAPI from 'near-api-js';
 import CryptoJS from 'crypto-js';
 import { ed25519 } from '@noble/curves/ed25519';
 import { WORDS } from 'jzk/utils/data';
-import { generateAddresses } from '../../scripts';
+import { generateAddresses } from './addresses.service';
 import { BigNumber } from 'ethers';
 
-const { Near, Account, keyStores, KeyPair, connect } = nearAPI;
+const { Near, Account, keyStores, KeyPair, connect, utils } = nearAPI;
 /*
 const master = {
   accountId: '254712526155.testnet',
@@ -13,16 +13,16 @@ const master = {
     'ed25519:58CQwMUZF2ZtSPd2E2eGcbdHTfwAhfpAhM5Y8iUPrQzizVC9gM1yqSirytJ5a7XRRy9KCGnr5C2u6PQ57EdEdfzQ',
 };*/
 
-const thisAccount = {
+/*const thisAccount = {
   accountId: 'easycoin8945.testnet',
   privateKey:
     'ed25519:3iSUmCdHF1UC7qNMeSNtS9WfMHLRXRr7JryyucqtXpUUcUK7WeBFsPVU8pbtCiRtCizQ5o2zjrbibsc4qN8nhFmb',
-};
+};*/
 
 const contractId = 'v1.signer-prod.testnet';
 //set master account in keyStore
-const keyStore = new keyStores.InMemoryKeyStore();
-keyStore.setKey('testnet', thisAccount.accountId, thisAccount.privateKey);
+export const keyStore = new keyStores.InMemoryKeyStore();
+//keyStore.setKey('testnet', accountId, privateKey);
 
 //configure near connection
 const config = {
@@ -37,10 +37,10 @@ const config = {
 const near = new Near(config);
 //const masterAccount = new Account(near.connection, master.accountId);
 
-async function getBalance(accountId) {
+export async function getBalance(accountId) {
   const account = await near.account(accountId);
   const balance = await account.getAccountBalance();
-  console.log(balance);
+  return utils.format.formatNearAmount(balance.available);
 }
 
 //create new account from a pair of phone number and uid
@@ -126,13 +126,22 @@ export async function createAccount(phoneNumber, uid) {
   await createAccountWithHelper(accountId, publicKey);
   keyStore.setKey('testnet', accountId, privateKey);
   const extAccounts = await generateAddresses(accountId);
-  return { accountId, privateKey, publicKey, extAccounts };
+  return { account: { accountId, privateKey, publicKey }, extAccounts };
+}
+
+export async function setKey(accountId, privateKey) {
+  console.log('setting key for ', accountId);
+  keyStore.setKey('testnet', accountId, privateKey);
 }
 
 export async function sign(accountId, payload, path) {
+  /*const keyPair = await keyStore.getKey('testnet', accountId);
+  if (!keyPair) {
+    throw new Error(`key not found for ${accountId}`);
+  }
+  await near.connection.signer.keyStore.setKey('testnet', accountId, keyPair);*/
   const account = await near.account(accountId);
   const accStaet = await account.state();
-  console.log(accStaet);
 
   const args = {
     request: {
@@ -141,7 +150,7 @@ export async function sign(accountId, payload, path) {
       key_version: 0,
     },
   };
-  let attachedDeposit = nearAPI.utils.format.parseNearAmount('0.2');
+  let attachedDeposit = nearAPI.utils.format.parseNearAmount('0.25');
   /*
   const proxyArgs = {
     rlp_payload: undefined,
@@ -155,7 +164,7 @@ export async function sign(accountId, payload, path) {
     attachedDeposit = nearAPI.utils.format.parseNearAmount('1');
   }*/
 
-  console.log('sign payload', payload.length > 200 ? payload.length : payload.toString());
+  //console.log('sign payload', payload.length > 200 ? payload.length : payload.toString());
   console.log('with path', path);
   console.log('this may take approx. 30 seconds to complete');
   //console.log('argument to sign: ', args);

@@ -23,6 +23,7 @@ import { addNewSpace } from 'jzk/services';
 import { SuccessModal } from 'jzk/components';
 import { Shilling, Dollar } from 'jzk/config';
 //import { createSpace } from 'dapp/contracts';
+import celo from 'jzk/services/celo.service';
 
 export default function CreateGroupScreen({ navigation }) {
   //useSelector((state) => state.wallet.walletInfo.address);
@@ -40,57 +41,16 @@ export default function CreateGroupScreen({ navigation }) {
 
   const inviteCode = generateId();
 
-  /*
-  const thisUser = useSelector((state) => state.wallet.userDetails);
+  const { addresses } = useSelector((state) => state.wallet.userDetails);
   const spaceInfo = useSelector((state) => state.spaces.spaceInfo);
-  
-  
-
-  useEffect(() => {
-    const getAddress = async () => {
-      const signer = getSigner();
-      const address = await signer.getAddress();
-      setThisAddress(address);
-    };
-    getAddress();
-    setAuthCode(generateId());
-  }, []);
 
   const handleCreateRosca = async () => {
     setIsLoading(true);
-    let txData = {
-      token: isKES ? Shilling.address : Dollar.address,
-      roscaName: spaceInfo.name,
-      imageLink: spaceInfo.imgLink,
-      goalAmount: ethers.utils.parseUnits(spaceInfo.goalAmount.toString(), 18).toString(),
-      ctbAmount: ethers.utils.parseUnits(spaceInfo.ctbAmount.toString(), 18).toString(),
-      ctbDay: spaceInfo.ctbDay,
-      disbDay: spaceInfo.disbDay,
-      occurrence: spaceInfo.disbOccurence,
-    };
-    console.log('TX Data:', txData, authCode);
-    const result = null; //await createSpace(txData, authCode);
+    const result = await celo.createGroup(addresses[1].address, spaceName, inviteCode);
     if (result) {
-      await addNewSpace({
-        address: result.address,
-        type: 'rosca',
-        name: spaceInfo.name,
-        authCode,
-        members: [
-          {
-            name: thisUser.names,
-            phone: thisUser.phone,
-            address: thisAddress,
-            attributes: {
-              isAdmin: true,
-              isPooled: false,
-            },
-          },
-        ],
-        invites: null,
-      });
       setIsSuccess(true);
-      dispatch(getRoscaData({ address: result.address, authCode }));
+
+      //dispatch(getRoscaData({ address: result.address, authCode }));
       setTimeout(() => {
         dispatch(setHasSpaces(true));
         onOpen();
@@ -98,14 +58,14 @@ export default function CreateGroupScreen({ navigation }) {
       }, 2000);
       //setIsLoading(false);
     }
-    setIsLoading(false); 
+    setIsLoading(false);
   };
-  */
+
   return (
     <Box flex={1} bg="muted.100">
       <Box bg="white" minH="30%" p={6}>
         <Text fontSize="lg" fontWeight="bold">
-          Set up your Space
+          Create your Group
         </Text>
         <Icon
           position="absolute"
@@ -152,12 +112,12 @@ export default function CreateGroupScreen({ navigation }) {
           </HStack>
           <Stack>
             <FormControl.Label>
-              <Text fontSize="md">Select your space type</Text>
+              <Text fontSize="md">Select group type</Text>
             </FormControl.Label>
             <Select
               size="lg"
               bg="white"
-              accessibilityLabel="Choose Space Type"
+              accessibilityLabel="Choose Group Type"
               placeholder="Space type"
               _selectedItem={{
                 bg: 'primary.600',
@@ -184,7 +144,7 @@ export default function CreateGroupScreen({ navigation }) {
             ? `Rosca created successfully! \nInvite Code: ${inviteCode}`
             : `Rosca creation Failed! \n${errorMessage}`
         }
-        screen="Spaces"
+        screen="Groups"
         scrnOptions={{ isSuccess }}
       />
       <Spacer />
@@ -197,10 +157,10 @@ export default function CreateGroupScreen({ navigation }) {
           _text={{ color: 'primary.100', fontWeight: 'semibold', mb: '0.5' }}
           onPress={() => {
             setIsLoading(true);
-            dispatch(setSpaceInfo({ spaceName, creatorAddress: thisAddress, spaceType }));
-            /*setTimeout(() => {
+            dispatch(setSpaceInfo({ spaceName, creatorAddress: addresses[1].address, spaceType }));
+            setTimeout(() => {
               handleCreateRosca();
-            }, 1000); */
+            }, 1000);
           }}
         >
           Continue

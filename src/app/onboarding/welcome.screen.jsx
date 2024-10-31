@@ -1,18 +1,9 @@
 import { YStack, Button, Text, View, Spacer, Theme, H2 } from 'tamagui';
-import { generateAddresses } from '../../../scripts';
-import { createAccount, sign } from 'jzk/services';
-import celo from '../../services/celo.service';
 
 export default function WelcomeScreen({ navigation }) {
-  const handleFn1 = async () => {
-    const tx = await celo.repayLoan('0xe5b31418a5cfcbb32bd530feb0acaf2ce86d69e8', 1);
-    console.log(tx);
-  };
+  const handleFn1 = async () => {};
   const handleFn = async () => {
     console.log('Called');
-    const tx = await generateAddresses('easycoin8945.testnet');
-    //console.log('signature', res);
-    console.log(tx);
   };
   return (
     <YStack flex={1} ai="center" gap="$5" bg="$background">
@@ -25,7 +16,7 @@ export default function WelcomeScreen({ navigation }) {
           minWidth="75%"
           themeInverse
           size="$5"
-          onPress={() => handleFn1()} //navigation.navigate('signup')}
+          onPress={() => navigation.navigate('signup')}
           fontWeight="bold"
         >
           Create New Account
@@ -33,7 +24,7 @@ export default function WelcomeScreen({ navigation }) {
         <Button
           variant="outlined"
           minWidth="75%"
-          onPress={() => handleFn()} //navigation.navigate('restore')}
+          onPress={() => navigation.navigate('restore')}
           size="$5"
           fontWeight="bold"
         >

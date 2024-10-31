@@ -24,7 +24,6 @@ export default function SignUpScreen({ navigation }) {
       return;
     }
     setIsLoading(false);
-
     navigation.navigate('verifyPhoneNo', {
       phone: formattedNumber,
       country: phoneInput.current?.getCountryCode(),

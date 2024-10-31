@@ -7,11 +7,13 @@ import { AccountScreen } from '../account';
 import { GroupsLandingScreen, GroupHomeScreen } from '../groups';
 import DummyScreen from '../dummy.screen';
 import { Icon, Box, Text, Avatar, Pressable, HStack } from 'native-base';
+import { useSelector } from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 
 export function BottomTabs() {
-  const hasGroups = true;
+  const hasGroups = useSelector((state) => state.spaces.userSpaces.hasSpaces);
+
   return (
     <Tab.Navigator screenOptions={TabScreenOptions}>
       <Tab.Screen name="Home" component={HomeScreen} />

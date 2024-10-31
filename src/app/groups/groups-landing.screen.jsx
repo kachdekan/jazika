@@ -13,17 +13,24 @@ import {
 import { MaterialIcons } from '@expo/vector-icons';
 //import { getSpaceInvite } from 'dapp/services';
 import { useSelector, useDispatch } from 'react-redux';
-//import { setSpaceInvites } from 'dapp/redux/spaces/spaces.slice';
+import { getRoscaData } from 'jzk/redux/spaces.slice';
+import { useEffect } from 'react';
 
 export default function GroupsLandingScreen({ navigation }) {
-  /*const dispatch = useDispatch();
-  const userPhone = useSelector((state) => state.essential.userDetails.phone);
+  const dispatch = useDispatch();
 
+  const thisAddress = useSelector((state) => state.wallet.userDetails.addresses[1].address);
+  const group = useSelector((state) => state.spaces.userSpaces);
+  console.log(group);
+  /*
   const handleSpaceInvite = async () => {
     const invite = await getSpaceInvite(userPhone);
     dispatch(setSpaceInvites(invite));
     navigation.navigate('joinSpace');
-  };*/
+  };
+  useEffect(() => {
+    dispatch(getRoscaData(thisAddress));
+  }, [navigation]);*/
   return (
     <Box flex={1} bg="muted.100" alignItems="center">
       <Box bg="white" padding={4} width="full">

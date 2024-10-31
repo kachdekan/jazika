@@ -5,7 +5,7 @@ import {
   setIsConnected,
   setTokenIsSet,
 } from './wallet.slice';
-import { seedAccount } from '../services';
+//import { seedAccount } from '../services';
 
 import {
   addUserData,
@@ -31,7 +31,7 @@ export const walletListeners = (startListening) => {
       await addUserToken(action.payload, userPhone);
       const userData = await getUserData(userPhone);
       if (userData.token === action.payload) {
-        await seedAccount(userData.address);
+        //await seedAccount(userData.address);
         listenerApi.dispatch(setTokenIsSet(true));
         listenerApi.dispatch(setLoggedIn(true));
       }

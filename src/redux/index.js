@@ -4,6 +4,7 @@ import { combineReducers } from '@reduxjs/toolkit';
 import spaceReducer from './spaces.slice';
 import walletReducer from './wallet.slice';
 import { walletListeners } from './wallet.effects';
+import { spacesListeners } from './spaces.effects';
 
 const listenerMiddleware = createListenerMiddleware();
 
@@ -18,5 +19,5 @@ export const store = configureStore({
     getDefaultMiddleware().prepend(listenerMiddleware.middleware),
 });
 
-const listeners = [walletListeners]; //, spacesListeners];
+const listeners = [walletListeners, spacesListeners];
 listeners.forEach((listener) => listener(listenerMiddleware.startListening));

@@ -4931,9 +4931,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-firebase/app@npm:^21.0.0":
-  version: 21.0.0
-  resolution: "@react-native-firebase/app@npm:21.0.0"
+"@react-native-firebase/app@npm:^21.2.0":
+  version: 21.2.0
+  resolution: "@react-native-firebase/app@npm:21.2.0"
   dependencies:
     firebase: "npm:10.13.2"
     superstruct: "npm:^0.6.2"
@@ -4944,31 +4944,31 @@ __metadata:
   peerDependenciesMeta:
     expo:
       optional: true
-  checksum: 10/69c699fb6d114ebc76322f83421ce70a8a38e74cad0c694b933d20e63840756ccfa2a88a943dd0304644164bb54dddaf4e2c92f9c5cf0f964a25c3a4a55557ea
+  checksum: 10/90d58d29f6925f8f4f9f8bf268665697b892c5a32a7e672cbec14fd0b8d9bf41ef1fc6d42ce030a7d019e86f09cf544187450d5c4e2be95ea63cf4bda8f686a3
   languageName: node
   linkType: hard
 
-"@react-native-firebase/auth@npm:^21.0.0":
-  version: 21.0.0
-  resolution: "@react-native-firebase/auth@npm:21.0.0"
+"@react-native-firebase/auth@npm:^21.2.0":
+  version: 21.2.0
+  resolution: "@react-native-firebase/auth@npm:21.2.0"
   dependencies:
     plist: "npm:^3.1.0"
   peerDependencies:
-    "@react-native-firebase/app": 21.0.0
+    "@react-native-firebase/app": 21.2.0
     expo: ">=47.0.0"
   peerDependenciesMeta:
     expo:
       optional: true
-  checksum: 10/8e755dab7ef85c8b741d3f4b0fe3b128d56b596c00659cd46d36c48fd67b0b8156bbe71e62421b96e0f5b9149b1c8c6a553eb21eeea621dde13da22cbc3946eb
+  checksum: 10/55ed5b55529db63b2efdd9ec8ff37b38aa305751b817d21ce0c6da1f8ff783dc427fa1adde130f33a124c28570db5b44d6ec2b07da0e203820d1b2e1a244a3eb
   languageName: node
   linkType: hard
 
-"@react-native-firebase/firestore@npm:^21.0.0":
-  version: 21.0.0
-  resolution: "@react-native-firebase/firestore@npm:21.0.0"
+"@react-native-firebase/firestore@npm:^21.2.0":
+  version: 21.2.0
+  resolution: "@react-native-firebase/firestore@npm:21.2.0"
   peerDependencies:
-    "@react-native-firebase/app": 21.0.0
-  checksum: 10/1428925f62e4c50c59990549e470047fb1d1c536bc9fa903e5cd55e75449cf836fe711acd04257f6730c8eca1db26745cfa3be92143d1f04caa74cfaba8cae45
+    "@react-native-firebase/app": 21.2.0
+  checksum: 10/4542006fd9c5990292eba488fc00a1f2a13a6a6d3f10fea28a663ee7893f98ee13255d49b8d5ccdc41d12293e34e141df61da39c7da1491da613c78ca3d43aa0
   languageName: node
   linkType: hard
 
@@ -12524,9 +12524,9 @@ __metadata:
     "@noble/ed25519": "npm:^2.1.0"
     "@openzeppelin/contracts": "npm:^5.1.0"
     "@react-native-async-storage/async-storage": "npm:1.21.0"
-    "@react-native-firebase/app": "npm:^21.0.0"
-    "@react-native-firebase/auth": "npm:^21.0.0"
-    "@react-native-firebase/firestore": "npm:^21.0.0"
+    "@react-native-firebase/app": "npm:^21.2.0"
+    "@react-native-firebase/auth": "npm:^21.2.0"
+    "@react-native-firebase/firestore": "npm:^21.2.0"
     "@react-navigation/bottom-tabs": "npm:^6.6.1"
     "@react-navigation/native": "npm:^6.0.2"
     "@react-navigation/native-stack": "npm:^6.11.0"
