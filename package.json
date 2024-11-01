@@ -2,10 +2,12 @@
   "name": "jazika",
   "main": "index.js",
   "version": "1.0.0",
+  "author": "Kachi <kachdekan@gmail.com>",
+  "license": "Apache 2.0",
   "scripts": {
     "start": "expo start --dev-client",
     "android": "expo run:android",
-    "build:dev": "eas build --profile development --platform android",
+    "build:prev": "eas build --profile preview --platform android",
     "test": "jest --watchAll",
     "lint": "expo lint",
     "ios": "expo run:ios"

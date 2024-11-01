@@ -1,5 +1,5 @@
 export const txData = [
-  {
+  /*{
     id: '0',
     title: 'Bought BTC with cKES',
     credited: false,
@@ -15,15 +15,15 @@ export const txData = [
     token: 'KES',
     amount: '130.0',
     date: '20 Mar 2020, 11:59',
-  },
+  },*/
   {
     id: '2',
-    title: 'Money added to wallet',
+    title: 'NEAR added to wallet',
     type: 'deposit',
     credited: true,
-    amount: '150.0',
-    token: 'cUSD',
-    date: '20 Mar 2020, 11:59',
+    amount: '10',
+    token: 'NEAR',
+    date: '1 Nov 2024, 01:45',
   },
 ];
 

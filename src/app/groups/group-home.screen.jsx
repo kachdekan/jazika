@@ -22,8 +22,8 @@ export default function GroupHomeScreen({ navigation }) {
   const [isLoadingBal, setIsLoadingBal] = useState(false);
   const [balance, setBalance] = useState({
     USDTBal: 0,
-    CKESBal: 10000 - groupDetails.loanBalance,
-    balUSD: (10000 - groupDetails.loanBalance) * 0.0078,
+    CKESBal: 10000 - groupDetails.loanBalance * 1,
+    balUSD: (10000 - groupDetails.loanBalance * 1) * 0.0078,
   });
   const [refreshing, setRefreshing] = useState(false);
   const handleTitlePress = () => {

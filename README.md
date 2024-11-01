@@ -1,50 +1,18 @@
-# Welcome to your Expo app 👋
+# ⚡ Jazika ⚡
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+_Empowering individuals with transparent, accessible, and inclusive financial services_
 
-## Get started
+Jazika is an effort to build a borderless, customer-centric, all in one platform to serve as a trusted companion to manage and grow money while giving back control to users. By simplifying web3 for the less tech and financial savvy, we intend to increase utilization of financial products across sub-saharan Africa. The “take it or leave it” approach to financial products and pricing has locked out many, esp in the informal sector from enjoying the benefits of current financial trends.
 
-1. Install dependencies
+Jazika is inspired by the utility of RoSCAs in Africa, commonly referred to as chamas in Kenya where people come together in groups to save and lend to each other. This form very interesting distribution channel for microloans and yield on saving products.
 
-   ```bash
-   npm install
-   ```
+### Positive outcomes
 
-2. Start the app
+- Interest for participating chamas.
+- Credit score and credit worthiness for users.
+- Real-time access to credit.
+- Credit at customized terms.
 
-   ```bash
-    npx expo start
-   ```
+### Get the app here [Download APK](https://expo.dev/artifacts/eas/bNq9MNjYoNHcU7wth1f53b.apk)
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+This repository includes an [Apache 2.0 License](https://choosealicense.com/licenses/apache-2.0/)

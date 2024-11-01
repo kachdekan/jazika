@@ -20,8 +20,8 @@ export default function HomeScreen({ navigation }) {
 
   const { account, addresses } = useSelector((state) => state.wallet.userDetails);
   const [balance, setBalance] = useState({
-    ETHBal: 0.0001,
-    BTCBal: 0.0001,
+    ETHBal: 0.0,
+    BTCBal: 0.0,
     CELOBal: 0,
     NEARBal: 0,
     USDTBal: 0,
@@ -219,7 +219,7 @@ export default function HomeScreen({ navigation }) {
                 eqAmount={
                   item.token === 'cKES'
                     ? (item.amount * 1).toFixed(2) + ' KES'
-                    : (item.amount * (item.token === 'CELO' ? 0 : 0)).toFixed(2) + ' KES'
+                    : (item.amount * (item.token === 'CELO' ? 0 : 556.31)).toFixed(2) + ' KES'
                 }
                 screen="TxDetails"
                 params={item}
